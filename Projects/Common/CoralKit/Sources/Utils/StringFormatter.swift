@@ -1,0 +1,28 @@
+// The MIT License (MIT)
+//
+// https://github.com/DevYeom/Coral
+
+import Foundation
+
+public enum StringFormatter {
+
+    public static func prettyPrintJSON(_ string: String) -> String {
+        let filtered = string
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\\", with: "")
+        guard let data = filtered.data(using: .utf8),
+            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+            let jsonData = try? JSONSerialization.data(
+                withJSONObject: jsonObject,
+                options: [
+                    .prettyPrinted,
+                ]
+            ),
+            let prettyPrinted = String(data: jsonData, encoding: .utf8)
+        else {
+            return "Invalid JSON"
+        }
+        return prettyPrinted
+    }
+
+}
